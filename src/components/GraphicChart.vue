@@ -77,11 +77,11 @@ export default defineComponent({
     );
 
     const chartData = {
-      labels: dataTime,
+      labels: dataTime.reverse(),
       datasets: [
         {
           label: "Ultimos Movimientos",
-          data: data,
+          data: data.reverse(),
         },
       ],
     };
