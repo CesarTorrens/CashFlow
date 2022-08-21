@@ -4,7 +4,11 @@
       <HeaderTemplate />
     </template>
     <template #resume>
-      <ResumeTemplate :total="totalAmount" @create="saveItem" />
+      <ResumeTemplate
+        :chartData="chartData"
+        :total="totalAmount"
+        @create="saveItem"
+      />
     </template>
     <template #movements>
       <MovementsTemplate @remove="deleteItem" :item="dataItem" />
@@ -39,6 +43,22 @@ export default {
       return this.dataItem.reduce((suma, m) => {
         return suma + m.amount;
       }, 0);
+    },
+    chartData() {
+      const dataTime = this.dataItem.map((movement) =>
+        movement.time.split(",")
+      );
+      const data = this.dataItem.map((movement) => movement.amount);
+
+      return {
+        labels: dataTime?.reverse(),
+        datasets: [
+          {
+            label: "Ultimos Movimientos",
+            data: data?.reverse(),
+          },
+        ],
+      };
     },
   },
   methods: {

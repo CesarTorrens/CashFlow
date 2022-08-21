@@ -1,5 +1,6 @@
 <template>
   <Line
+    ref="line"
     :chart-options="chartOptions"
     :chart-data="chartData"
     :chart-id="chartId"
@@ -66,26 +67,13 @@ export default defineComponent({
       type: Array,
       default: () => [],
     },
+    chartData: {
+      type: Object,
+      default: () => {},
+    },
   },
 
   setup(props) {
-    const dataTime = JSON.parse(localStorage.getItem("dataItem"))?.map((m) =>
-      m.time.split(",")
-    );
-    const data = JSON.parse(localStorage.getItem("dataItem"))?.map(
-      (m) => m.amount
-    );
-
-    const chartData = {
-      labels: dataTime?.reverse(),
-      datasets: [
-        {
-          label: "Ultimos Movimientos",
-          data: data?.reverse(),
-        },
-      ],
-    };
-
     const chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
@@ -93,8 +81,7 @@ export default defineComponent({
 
     return () =>
       h(Line, {
-        data,
-        chartData,
+        chartData: props.chartData,
         chartOptions,
         chartId: props.chartId,
         width: props.width,

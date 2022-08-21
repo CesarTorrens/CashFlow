@@ -8,11 +8,7 @@
         v-text="currencyFormat.format(total)"
       />
     </div>
-    <span
-      class="title-grafic"
-      v-text="'Click en Logo para actualizar la grafica'"
-    />
-    <GraphicChart />
+    <GraphicChart :chartData="chartData" />
     <button
       class="button-add button-active"
       @click="showModal = true"
@@ -73,6 +69,9 @@ const props = defineProps({
   total: {
     type: Number,
   },
+  chartData: {
+    type: Object,
+  },
 });
 const currencyFormat = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -81,7 +80,7 @@ const currencyFormat = new Intl.NumberFormat("en-US", {
   roundingIncrement: 5,
 });
 
-const { total } = toRefs(props);
+const { total, chartData } = toRefs(props);
 
 const showModal = ref(false);
 const title = ref(null);
@@ -96,7 +95,6 @@ const emit = defineEmits(["create"]);
 
 const loadItem = () => {
   if (movementType.value === "Gasto") amount.value *= -1;
-  console.log(amount.value);
   emit("create", {
     title: title.value,
     amount: amount.value,
@@ -166,10 +164,6 @@ form {
 }
 .Close {
   width: 40px;
-}
-.title-grafic {
-  color: #0689b0;
-  font-weight: 600;
 }
 .header-modal {
   display: flex;
